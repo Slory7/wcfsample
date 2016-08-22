@@ -12,10 +12,10 @@ namespace WcfService1
 {
     public class HostServices
     {
-        public void ConfigServices()
+        public void RegisterServices()
         {
             var hostTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetCustomAttribute(typeof(HostServiceAttribute), false) != null);
-            ServiceHostFactory factory = new ServiceHostFactory();
+            WcfServiceFactory factory = new WcfServiceFactory();
             foreach(var serviceType in hostTypes)
             {
                 RouteTable.Routes.Add(

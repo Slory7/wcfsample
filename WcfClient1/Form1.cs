@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceContracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,8 +21,14 @@ namespace WcfClient1
         private void button1_Click(object sender, EventArgs e)
         {
             var client = Service2Client.Instance();
-            var result = client.GetData(Int32.Parse(this.textBox1.Text));
-            this.label1.Text = result;
+            //var result = client.GetData(Int32.Parse(this.textBox1.Text));
+            var objCompositeType2 = new CompositeType2()
+            {
+                BoolValue = true,
+                StringValue = this.textBox1.Text
+            };
+            var result = client.GetDataUsingDataContract(objCompositeType2);
+            this.label1.Text = result.StringValue;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace WcfService1
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            new HostServices().ConfigServices();
+            new HostServices().RegisterServices();
         }
 
         protected void Session_Start(object sender, EventArgs e)
