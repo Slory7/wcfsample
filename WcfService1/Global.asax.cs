@@ -12,6 +12,8 @@ namespace WcfService1
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            AppDomain.CurrentDomain.Load("Business.Service");
+
             new HostServices().RegisterServices();
         }
 
