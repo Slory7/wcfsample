@@ -8,6 +8,8 @@ using Business.Manager.Interfaces;
 using Business.Manager.Order;
 using Business.Manager.Order.Interfaces;
 using Business.Core.Interfaces;
+using Business.Core.BaseManager;
+using Service.Contracts.ViewModels.Order;
 
 namespace Business.Manager
 {
@@ -26,8 +28,11 @@ namespace Business.Manager
 
                    .RegisterType<IManagerCommon, ManagerCommon>()
 
-                   .RegisterType<IBizManager<BS_Order_SalesOrder_Batch>, OrderBatchBizManager>()
-                   .RegisterType<IOrderBatchBizManager, OrderBatchBizManager>()
+                   .RegisterType<IManager<BS_Order_SalesOrder_Batch>, OrderBatchManager>()
+                   .RegisterType<IOrderBatchManager, OrderBatchManager>()
+
+                   .RegisterType<IBizManager<OrderBiz>, OrderBizManager>()
+                   .RegisterType<IOrderBizManager, OrderBizManager>()
                    ;
         }
     }

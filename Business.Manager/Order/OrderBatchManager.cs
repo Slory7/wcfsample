@@ -13,13 +13,13 @@ using Business.Manager.Interfaces;
 
 namespace Business.Manager.Order
 {
-    public class OrderBatchBizManager : BaseBizManager<BS_Order_SalesOrder_Batch>, IOrderBatchBizManager
+    public class OrderBatchManager : BaseManager<BS_Order_SalesOrder_Batch>, IOrderBatchManager
     {
         IReadOnlyRepository<BS_Order_SalesOrder_Batch> _repositoryReadOnly;
         IRepository<BS_Order_SalesOrder_Batch> _repository;
         IUnitOfWork _unitOfWork;
         IManagerCommon _managerCommon;
-        public OrderBatchBizManager(IReadOnlyRepository<BS_Order_SalesOrder_Batch> repositoryReadOnly
+        public OrderBatchManager(IReadOnlyRepository<BS_Order_SalesOrder_Batch> repositoryReadOnly
             , IRepository<BS_Order_SalesOrder_Batch> repository
             , IUnitOfWork unitOfWork
             , IManagerCommon managerCommon
@@ -34,7 +34,7 @@ namespace Business.Manager.Order
         {
             get
             {
-                return "BS_Order_SalesOrder_Batch";
+                return "OrderBatch";
             }
         }
 

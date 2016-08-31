@@ -16,6 +16,7 @@ namespace Business.Service
                    .RegisterType<IServiceCommon, ServiceCommon>()
 
                    .RegisterType<IService2, Service2>()
+                   .RegisterType<IOrderBatchService, OrderBatchService>()
                    .RegisterType<IOrderService, OrderService>()
                    ;
         }

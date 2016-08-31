@@ -4,18 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Core
+namespace Business.Manager
 {
     public class Constants
     {
     }
-
-    public enum DBOperation
+    public enum BizTypeEnum
     {
-        Select,
-        Insert,
-        Update,
-        Delete,
-        Complex
+        BM,
+        ZT
     }
 }

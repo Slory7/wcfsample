@@ -46,15 +46,18 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Services\IService2.cs" />
-    <Compile Include="Services\Order\IOrderService.cs" />
+    <Compile Include="Services\Order\IOrderBatchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultData.cs" />
     <Compile Include="ResultStatus.cs" />
+    <Compile Include="Services\Order\IOrderService.cs" />
     <Compile Include="ViewModels\Order\BS_Order_SalesOrder_BatchDto.cs" />
     <Compile Include="ViewModels\Order\BS_Order_SalesOrderDto.cs" />
     <Compile Include="ViewModels\Order\BS_Order_SalesOrder_BatchItemDto.cs" />
     <Compile Include="ViewModels\CompositeType.cs" />
     <Compile Include="ViewModels\CompositeType2.cs" />
+    <Compile Include="ViewModels\Order\OrderBizResult.cs" />
+    <Compile Include="ViewModels\Order\OrderBiz.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

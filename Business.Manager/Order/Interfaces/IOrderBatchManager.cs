@@ -7,7 +7,7 @@ using Service.Contracts.ViewModels.Order;
 
 namespace Business.Manager.Order.Interfaces
 {
-    public interface IOrderBatchBizManager
+    public interface IOrderBatchManager
     {
         ResultData<List<BS_Order_SalesOrder_BatchDto>> GetOneDayBatch(DateTime day);
         ResultData<int> InsertBulk(ICollection<BS_Order_SalesOrder_Batch> items);

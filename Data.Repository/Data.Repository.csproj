@@ -56,7 +56,7 @@
     <Compile Include="Repositories\Order\OrderRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model.Entities\Data.Entities.csproj">
+    <ProjectReference Include="..\Data.Entities\Data.Entities.csproj">
       <Project>{5f76ef47-1776-41c9-b946-c56349a25e7d}</Project>
       <Name>Data.Entities</Name>
     </ProjectReference>

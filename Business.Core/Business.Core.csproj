@@ -41,8 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseManager\BaseBizManager.cs" />
+    <Compile Include="BaseManager\BaseManager.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Interfaces\IBizManager.cs" />
+    <Compile Include="Interfaces\IManager.cs" />
+    <Compile Include="Interfaces\IBizFlowStep.cs" />
     <Compile Include="Interfaces\IDataValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

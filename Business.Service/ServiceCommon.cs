@@ -10,5 +10,7 @@ namespace Business.Service
     public class ServiceCommon : IServiceCommon
     {
         public void DoSomeThing() { }
+
+        public static void WarmUp() { }
     }
 }

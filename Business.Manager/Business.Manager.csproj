@@ -52,11 +52,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="ManagerCommon.cs" />
     <Compile Include="Interfaces\IManagerCommon.cs" />
-    <Compile Include="Order\Interfaces\IOrderBatchBizManager.cs" />
+    <Compile Include="Order\BizFlowSteps\BMSteps\A2_StepSaveDelivery.cs" />
+    <Compile Include="Order\BizFlowSteps\ZTSteps\A1_StepPayItem.cs" />
+    <Compile Include="Order\BizFlowSteps\BMSteps\A1_StepSaveOrder.cs" />
+    <Compile Include="Order\Interfaces\IOrderBatchManager.cs" />
     <Compile Include="Order\Interfaces\IOrderCommon.cs" />
-    <Compile Include="Order\OrderBatchBizManager.cs" />
+    <Compile Include="Order\Internal\ProcessObject.cs" />
+    <Compile Include="Order\Interfaces\IOrderBizManager.cs" />
+    <Compile Include="Order\OrderBatchManager.cs" />
+    <Compile Include="Order\OrderBizManager.cs" />
     <Compile Include="Order\OrderCommon.cs" />
     <Compile Include="Order\Valiators\OrderBatchValidators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +74,10 @@
       <Project>{0520e77f-682e-4d74-a7e8-0cffd9481b01}</Project>
       <Name>Business.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Data.Entities\Data.Entities.csproj">
+      <Project>{5f76ef47-1776-41c9-b946-c56349a25e7d}</Project>
+      <Name>Data.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data.Repository\Data.Repository.csproj">
       <Project>{758d79ba-bbbb-437f-a3ce-cc33428ce088}</Project>
       <Name>Data.Repository</Name>
@@ -74,10 +85,6 @@
     <ProjectReference Include="..\Framework.Core\Framework.Core.csproj">
       <Project>{df06ad6c-9fe5-4588-b661-86855033397e}</Project>
       <Name>Framework.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Model.Entities\Data.Entities.csproj">
-      <Project>{5f76ef47-1776-41c9-b946-c56349a25e7d}</Project>
-      <Name>Data.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repository.Pattern\Repository.Pattern.csproj">
       <Project>{4821a190-ca08-487a-8ae0-2ad36609171b}</Project>
@@ -95,6 +102,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

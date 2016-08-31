@@ -30,7 +30,8 @@ on a.sBatchCode = b.sBatchCode where a.dtModify between @0 and @1";
         public static List<BS_Order_SalesOrder_BatchDto> BeforeBatch(this IReadOnlyRepository<BS_Order_SalesOrder_Batch> repos)
         {
             string strSql = "Where dtModify<@0";
-            return repos.Fetch<BS_Order_SalesOrder_BatchDto>(strSql, DateTime.Today);
+            var lists = repos.Fetch<BS_Order_SalesOrder_BatchDto>(strSql, DateTime.Today);
+            return lists;
         }
     }
 }

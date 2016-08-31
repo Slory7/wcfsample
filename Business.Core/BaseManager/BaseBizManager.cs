@@ -12,34 +12,28 @@ using System.Threading.Tasks;
 
 namespace Business.Core.BaseManager
 {
-    public abstract class BaseBizManager<TEntity> : IBizManager<TEntity> where TEntity : class, IObjectState
+    public abstract class BaseBizManager<TEntity> : IBizManager<TEntity> where TEntity : class
     {
-        IReadOnlyRepository<TEntity> _repositoryReadOnly;
-        IRepository<TEntity> _repository;
+        public virtual string InfoName { get { return typeof(TEntity).Name; } }
 
-        public BaseBizManager(IReadOnlyRepository<TEntity> repositoryReadOnly
-            , IRepository<TEntity> repository
-            )
-        {
-            _repositoryReadOnly = repositoryReadOnly;
-            _repository = repository;
-        }
-
-        public abstract string InfoName { get; }
-
-        public abstract void InitObject(TEntity item);
+        public virtual void InitObject(TEntity item) { }
 
         public virtual string CheckDataValid(TEntity item, DBOperation operation)
         {
             var validatorType = typeof(IDataValidator<TEntity>);
-            TypeLocator objTypeLocator = new TypeLocator();
-            var types = objTypeLocator.GetAllMatchingTypes((t) =>
+            var types = Assembly.GetCallingAssembly().GetTypes().Where((t) =>
             {
                 return t.IsClass && !t.IsAbstract && validatorType.IsAssignableFrom(t);
             });
+            var lstTypeInstances = new List<IDataValidator<TEntity>>(types.Count());
             foreach (var valType in types)
             {
                 var valObj = Activator.CreateInstance(valType) as IDataValidator<TEntity>;
+                lstTypeInstances.Add(valObj);
+            }
+            var canUseInstances = lstTypeInstances.Where(t => t.IsEnabled).OrderBy(t => t.Order);
+            foreach (var valObj in canUseInstances)
+            {
                 string strCheckResult = valObj.CheckValid(item, operation);
                 if (strCheckResult != null) return strCheckResult;
             }
@@ -52,105 +46,68 @@ namespace Business.Core.BaseManager
             return true;
         }
 
-        public virtual TEntity SingleOrDefault(object primaryKey)
-        {
-            return _repositoryReadOnly.SingleOrDefault(primaryKey);
-        }
-
-        public virtual int CountRecord()
-        {
-            return _repositoryReadOnly.CountRecord(null);
-        }
-
-        public virtual IEnumerable<TEntity> Query()
-        {
-            return _repositoryReadOnly.Query(null);
-        }
-
-        public virtual List<TEntity> Fetch()
-        {
-            return _repositoryReadOnly.Fetch(null);
-        }
-
-        public virtual ResultData<object> Insert(TEntity itemToAdd)
+        public virtual ResultData<object> ProcessBizFlow(TEntity source, string bizType)
         {
             var result = new ResultData<object>();
-
-            InitObject(itemToAdd);
-
-            string strCheckResult = CheckDataValid(itemToAdd, DBOperation.Insert);
-            if (strCheckResult == null)
+            string strCheckResult = CheckDataValid(source, DBOperation.Complex);
+            if (strCheckResult != null)
             {
-                result.Result = _repository.Insert(itemToAdd);
-                if (result.Result == null)
-                    result.Status = ResultStatus.Error;
-            }
-            else
-            {
-                result.Status = ResultStatus.BadData;
                 result.Message = strCheckResult;
-            }
-            return result;
-        }
-
-        public virtual ResultData<int> Update(TEntity itemToUpdate)
-        {
-            var result = new ResultData<int>();
-            string strCheckResult = CheckDataValid(itemToUpdate, DBOperation.Update);
-            if (strCheckResult == null)
-            {
-                result.Result = _repository.Update(itemToUpdate);
-                if (result.Result <= 0)
-                    result.Status = ResultStatus.Error;
-            }
-            else
-            {
                 result.Status = ResultStatus.BadData;
-                result.Message = strCheckResult;
+                return result;
             }
-            return result;
-        }
 
-        public virtual ResultData<int> UpdateByColumns(TEntity poco)
-        {
-            var result = new ResultData<int>();
-            string strCheckResult = CheckDataValid(poco, DBOperation.Update);
-            if (strCheckResult == null)
+            var bizStepType = typeof(IBizFlowStep<TEntity>);
+            var types = Assembly.GetCallingAssembly().GetTypes().Where((t) =>
             {
-                result.Result = _repository.Update(poco);
-                if (result.Result <= 0)
-                    result.Status = ResultStatus.Error;
-            }
-            else
+                return t.IsClass && !t.IsAbstract && bizStepType.IsAssignableFrom(t);
+            });
+            var lstTypeInstances = new List<IBizFlowStep<TEntity>>(types.Count());
+            foreach (var valType in types)
             {
-                result.Status = ResultStatus.BadData;
-                result.Message = strCheckResult;
+                var valObj = Activator.CreateInstance(valType) as IBizFlowStep<TEntity>;
+                lstTypeInstances.Add(valObj);
             }
-            return result;
-        }
+            var canUseInstances = lstTypeInstances.Where(t => t.IsEnabled && t.BizType == bizType).OrderBy(t => t.StepNumber);
+            var serialIntances = canUseInstances.Where(t => !t.AllowParallel);
+            int nLastStep = 0;
+            object lastStepResult = null;
+            foreach (var stepObj in serialIntances)
+            {
+                if (stepObj.StepNumber >= nLastStep)
+                {
+                    nLastStep = stepObj.StepNumber;
 
-        public virtual ResultData<int> Delete(TEntity itemToDelete)
-        {
-            var result = new ResultData<int>();
-            string strCheckResult = CheckDataValid(itemToDelete, DBOperation.Delete);
-            if (strCheckResult == null)
-            {
-                result.Result = _repository.Update(itemToDelete);
-                if (result.Result <= 0)
-                    result.Status = ResultStatus.Error;
-            }
-            else
-            {
-                result.Status = ResultStatus.BadData;
-                result.Message = strCheckResult;
-            }
-            return result;
-        }
+                    var stepResult = stepObj.ProcessStep(source, lastStepResult);
 
-        public virtual ResultData<int> Delete(object primaryKey)
-        {
-            var result = new ResultData<int>();
-            result.Result = _repository.Delete(primaryKey);
+                    result = stepResult;
+
+                    if (stepResult.Status == ResultStatus.Success)
+                    {
+                        lastStepResult = stepResult.Result;
+                        if (stepObj.NextStep == -1)
+                        {
+                            break;
+                        }
+                        else if (stepObj.NextStep > 0)
+                        {
+                            nLastStep = stepObj.NextStep;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if (result.Status == ResultStatus.Success)
+            {
+                var parallelIntances = canUseInstances.Where(t => t.AllowParallel);
+                Parallel.ForEach(parallelIntances, (stepObj) =>
+               {
+                   stepObj.ProcessStep(source, lastStepResult);
+               });
+            }
             return result;
         }
     }

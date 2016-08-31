@@ -63,9 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IServiceCommon.cs" />
+    <Compile Include="Order\OrderService.cs" />
     <Compile Include="Service2.cs" />
     <Compile Include="ServiceCommon.cs" />
-    <Compile Include="Order\OrderService.cs" />
+    <Compile Include="Order\OrderBatchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterConfig\UnityConfigHandler.cs" />
   </ItemGroup>
@@ -81,13 +82,13 @@
       <Project>{a0af7c70-9aed-4415-9b85-cb4b76bf1966}</Project>
       <Name>Business.Manager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Data.Entities\Data.Entities.csproj">
+      <Project>{5f76ef47-1776-41c9-b946-c56349a25e7d}</Project>
+      <Name>Data.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Framework.Core\Framework.Core.csproj">
       <Project>{df06ad6c-9fe5-4588-b661-86855033397e}</Project>
       <Name>Framework.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Model.Entities\Data.Entities.csproj">
-      <Project>{5f76ef47-1776-41c9-b946-c56349a25e7d}</Project>
-      <Name>Data.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repository.Pattern\Repository.Pattern.csproj">
       <Project>{4821a190-ca08-487a-8ae0-2ad36609171b}</Project>
