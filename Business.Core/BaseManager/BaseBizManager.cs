@@ -1,8 +1,10 @@
 ﻿using Business.Core.Interfaces;
 using Framework.Core.Reflection;
+using Microsoft.Practices.Unity;
 using Repository.Pattern.Infrastructure;
 using Repository.Pattern.Interface;
 using Service.Contracts;
+using Service.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +30,7 @@ namespace Business.Core.BaseManager
             var lstTypeInstances = new List<IDataValidator<TEntity>>(types.Count());
             foreach (var valType in types)
             {
-                var valObj = Activator.CreateInstance(valType) as IDataValidator<TEntity>;
+                var valObj = ServiceGlobals.UnityContainer.Resolve(valType) as IDataValidator<TEntity>;
                 lstTypeInstances.Add(valObj);
             }
             var canUseInstances = lstTypeInstances.Where(t => t.IsEnabled).OrderBy(t => t.Order);
@@ -65,7 +67,7 @@ namespace Business.Core.BaseManager
             var lstTypeInstances = new List<IBizFlowStep<TEntity>>(types.Count());
             foreach (var valType in types)
             {
-                var valObj = Activator.CreateInstance(valType) as IBizFlowStep<TEntity>;
+                var valObj = ServiceGlobals.UnityContainer.Resolve(valType) as IBizFlowStep<TEntity>;
                 lstTypeInstances.Add(valObj);
             }
             var canUseInstances = lstTypeInstances.Where(t => t.IsEnabled && t.BizType == bizType).OrderBy(t => t.StepNumber);

@@ -36,15 +36,16 @@ namespace Client.Core
 
                 client = (IChannel)myChannelFactory.CreateChannel();
 
-                new System.ServiceModel.OperationContextScope((IContextChannel)client);
-                //MessageHeader headAuth = MessageHeader.CreateHeader("Authorization", "http://yournamespace.com/v1", "aa");
-                //OperationContext.Current.OutgoingMessageHeaders.Add(headAuth);
-                HttpRequestMessageProperty requestMessage = new HttpRequestMessageProperty();
-                requestMessage.Headers["UserSessionID"] = Guid.NewGuid().ToString();
-                OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = requestMessage;
-
                 clients.Add(serviceName, client);
             }
+
+            new System.ServiceModel.OperationContextScope((IContextChannel)client);
+            //MessageHeader headAuth = MessageHeader.CreateHeader("Authorization", "http://yournamespace.com/v1", "aa");
+            //OperationContext.Current.OutgoingMessageHeaders.Add(headAuth);
+            HttpRequestMessageProperty requestMessage = new HttpRequestMessageProperty();
+            requestMessage.Headers["UserSessionID"] = Guid.NewGuid().ToString();
+            OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = requestMessage;
+
             return (IService)client;
         }
 

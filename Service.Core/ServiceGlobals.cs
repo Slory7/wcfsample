@@ -9,25 +9,13 @@ using System.Threading.Tasks;
 
 namespace Service.Core
 {
-    public class ServiceGlobals
+    public partial class ServiceGlobals
     {
         static IUnityContainer _container;
         public static IUnityContainer UnityContainer
         {
             get { return _container; }
             internal set { _container = value; }
-        }
-        public static string CurrentUserSessionID
-        {
-            get
-            {
-                if (WebOperationContext.Current != null)
-                {
-                    var headerValue = WebOperationContext.Current.IncomingRequest.Headers["UserSessionID"];
-                    return headerValue;
-                }
-                return null;
-            }
-        }
+        }       
     }
 }

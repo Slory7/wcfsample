@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Service.Contracts;
 using Business.Manager.Order.Internal;
+using Microsoft.Practices.Unity;
+using Business.Manager.Interfaces;
 
 namespace Business.Manager.Order.BizFlowSteps.BMSteps
 {
@@ -15,6 +17,9 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
     /// </summary>
     public class A1_StepSaveOrder : IBizFlowStep<OrderBiz>
     {
+        [Dependency]
+        public IManagerCommon _managerCommon { get; set; }
+
         public string BizType
         {
             get
@@ -52,6 +57,7 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
         public ResultData<object> ProcessStep(OrderBiz source, object prevResult)
         {
             var result = new ResultData<object>();
+            _managerCommon.DoSomeThing();
             //TODO: do some thing
             var resultObject = new ProcessObject();
             resultObject.NewOrderCode = Guid.NewGuid().ToString();
