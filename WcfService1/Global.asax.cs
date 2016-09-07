@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
@@ -12,7 +13,8 @@ namespace WcfService1
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Business.Service.ServiceCommon.WarmUp();
+            Assembly.Load("Business.Service");
+            Assembly.Load("Business.Manager");
 
             new HostServices().RegisterServices();
         }

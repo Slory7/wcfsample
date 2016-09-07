@@ -52,6 +52,7 @@
     <Compile Include="Models\Partials\BS_Order_Flat.cs" />
     <Compile Include="Models\Partials\BS_Order_SalesOrder.cs" />
     <Compile Include="Models\Partials\BS_Order_SalesOrder_Batch.cs" />
+    <Compile Include="Models\Partials\BS_Order_SalesOrder_BatchItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

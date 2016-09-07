@@ -16,6 +16,23 @@ namespace Data.Repository.Repositories.Order
 {
     public static class OrderRepository
     {
+        public static BS_Order_SalesOrder GetOrder(this IReadOnlyRepository<BS_Order_SalesOrder_Batch> repos, string orderCode)
+        {
+            var unityOfWorkReadOnly = ServiceGlobals.UnityContainer.Resolve<IReadOnlyUnitOfWork>();
+            string strSql = @"select a.*,b.*,c.*,d.* from dbo.BS_Order_SalesOrder a
+                                inner join dbo.BS_Order_SalesOrder_Batch b
+                                on a.sCode=b.sOrderCode
+                                inner join BS_Order_SalesOrder_BatchItem c
+                                on b.sBatchCode=c.sBatchCode
+                                left join BS_Order_SalesOrder_Voucher d
+                                on c.sItemCode=d.sBatchItemCode
+                                where a.sCode = @0";
+            var lists = unityOfWorkReadOnly.Database.Fetch<BS_Order_SalesOrder, BS_Order_SalesOrder_Batch, BS_Order_SalesOrder_BatchItem, BS_Order_SalesOrder_Voucher, BS_Order_SalesOrder>(
+                new OrderRelator().MapIt,
+                strSql,
+                orderCode);
+            return lists.FirstOrDefault();
+        }
         public static List<BS_Order_SalesOrder_BatchDto> GetOneDayBatchs(this IReadOnlyRepository<BS_Order_SalesOrder_Batch> repos, DateTime day)
         {
             var unityOfWorkReadOnly = ServiceGlobals.UnityContainer.Resolve<IReadOnlyUnitOfWork>();

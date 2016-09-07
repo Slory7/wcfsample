@@ -73,6 +73,7 @@
     <Compile Include="Interfaces\IUnityConfigHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceGlobals.cs" />
+    <Compile Include="UnityConfig.cs" />
     <Compile Include="WcfServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
