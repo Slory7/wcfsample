@@ -10,13 +10,8 @@ using System.Threading.Tasks;
 
 namespace Business.Core.Interfaces
 {
-    public interface IManager<TEntity>
+    public interface IManager<TEntity> : IBizManager<TEntity>
     {
-        string InfoName { get; }
-        void InitObject(TEntity item);
-        string CheckDataValid(TEntity item, DBOperation operation);
-        bool HasPermission();
-
         TEntity SingleOrDefault(object primaryKey);
         int CountRecord();
         IEnumerable<TEntity> Query();
@@ -26,6 +21,5 @@ namespace Business.Core.Interfaces
         ResultData<int> UpdateByColumns(TEntity poco);
         ResultData<int> Delete(TEntity itemToDelete);
         ResultData<int> Delete(object primaryKey);
-        ResultData<object> ProcessBizFlow(TEntity source, string bizType);
     }
 }

@@ -28,10 +28,8 @@ namespace Business.Manager
 
                    .RegisterType<IManagerCommon, ManagerCommon>()
 
-                   .RegisterType<IManager<BS_Order_SalesOrder_Batch>, OrderBatchManager>()
                    .RegisterType<IOrderBatchManager, OrderBatchManager>()
 
-                   .RegisterType<IBizManager<OrderBiz>, OrderBizManager>()
                    .RegisterType<IOrderBizManager, OrderBizManager>()
                    ;
         }

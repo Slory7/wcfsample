@@ -25,20 +25,17 @@ namespace Business.Service.Order
     [ValidateDataAnnotationsBehavior]
     public class OrderService : IOrderService
     {
-        IBizManager<OrderBiz> _bizManager;
         IOrderBizManager  _manager;
-        public OrderService(IBizManager<OrderBiz> bizManager
-            ,IOrderBizManager manager
+        public OrderService(IOrderBizManager manager
             )
         {
-            _bizManager = bizManager;
             _manager = manager;
         }
 
         public ResultData<OrderBMResult> ProcessBMOrder(OrderBiz order)
         {
             ResultData<OrderBMResult> result = null;
-            if (!_bizManager.HasPermission())
+            if (!_manager.HasPermission())
             {
                 result = new ResultData<OrderBMResult>()
                 {
@@ -55,7 +52,7 @@ namespace Business.Service.Order
         public ResultData<OrderZTResult> ProcessZTOrder(OrderBiz order)
         {
             ResultData<OrderZTResult> result = null;
-            if (!_bizManager.HasPermission())
+            if (!_manager.HasPermission())
             {
                 result = new ResultData<OrderZTResult>()
                 {
