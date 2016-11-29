@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using Repository.Pattern;
 using Repository.Pattern.Interface;
+using Service.Core.Common;
 using Service.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace Service.Core
         {
             // register all your components with the container here
             container
-               .RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager())
-               .RegisterType<IReadOnlyUnitOfWork, ReadOnlyUnitOfWork>(new HierarchicalLifetimeManager())
+               .RegisterType<IUnitOfWork, UnitOfWork>(new PerRequestLifetimeManager())
+               .RegisterType<IReadOnlyUnitOfWork, ReadOnlyUnitOfWork>(new PerRequestLifetimeManager())
                //.RegisterType<DataContext>(new HierarchicalLifetimeManager());
                ;
 
