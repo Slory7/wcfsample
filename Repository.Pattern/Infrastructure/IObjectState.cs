@@ -1,11 +1,12 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
+
+using PetaPoco;
 
 namespace Repository.Pattern.Infrastructure
 {
     public interface IObjectState
     {
-        [NotMapped]
+        [Ignore]
         ObjectState ObjectState { get; set; }
     }
 }

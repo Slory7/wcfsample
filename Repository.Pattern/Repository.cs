@@ -15,43 +15,7 @@ namespace Repository.Pattern
         {
             _unitOfWork = unitOfWork;
         }
-        public TEntity SingleOrDefault(object primaryKey)
-        {
-            return _unitOfWork.Database.SingleOrDefault<TEntity>(primaryKey);
-        }
-        public IEnumerable<TEntity> Query(string whereClauses, params object[] args)
-        {
-            var pd = PocoData.ForType(typeof(TEntity), _unitOfWork.Database.DefaultMapper);
-            var sql = "SELECT * FROM " + pd.TableInfo.TableName;
-            if (whereClauses != null) sql += " " + whereClauses;
-            return _unitOfWork.Database.Query<TEntity>(sql, args);
-        }
-        public List<TEntity> Fetch(string whereClauses, params object[] args)
-        {
-            var pd = PocoData.ForType(typeof(TEntity), _unitOfWork.Database.DefaultMapper);
-            var sql = "SELECT * FROM " + pd.TableInfo.TableName;
-            if (whereClauses != null) sql += " " + whereClauses;
-            return _unitOfWork.Database.Fetch<TEntity>(sql, args);
-        }
-        public List<T> Fetch<T>(string whereClauses, params object[] args)
-        {
-            var pd = PocoData.ForType(typeof(TEntity), _unitOfWork.Database.DefaultMapper);
-            var sql = "SELECT * FROM " + pd.TableInfo.TableName;
-            if (whereClauses != null) sql += " " + whereClauses;
-            return _unitOfWork.Database.Fetch<T>(sql, args);
-        }
-        public int Count(string whereClauses, params object[] args)
-        {
-            var pd = PocoData.ForType(typeof(TEntity), _unitOfWork.Database.DefaultMapper);
-            var sql = "SELECT Count(*) FROM " + pd.TableInfo.TableName;
-            if (whereClauses != null) sql += " " + whereClauses;
-            return _unitOfWork.Database.ExecuteScalar<int>(sql, args);
-        }
-
-        public Page<TEntity> PagedQuery(long pageNumber, long itemsPerPage, string sql, params object[] args)
-        {
-            return _unitOfWork.Database.Page<TEntity>(pageNumber, itemsPerPage, sql, args);
-        }
+        //public IDataContext Database { get { return _unitOfWork.Database; } }
         public object Insert(TEntity poco)
         {
             return _unitOfWork.Database.Insert(poco);
@@ -68,9 +32,22 @@ namespace Repository.Pattern
         {
             return _unitOfWork.Database.Delete(poco);
         }
+        public int Update(string setClauses, string whereClauses, params object[] args)
+        {
+            string strTableName = typeof(TEntity).Name;
+            string strSQL = "Update " + strTableName + " " + setClauses + " " + whereClauses;
+            return _unitOfWork.Database.Execute(strSQL, args);
+        }
         public int Delete(object primaryKey)
         {
             return _unitOfWork.Database.Delete(primaryKey);
         }
+        public int Delete(string whereClauses, params object[] args)
+        {
+            string strTableName = typeof(TEntity).Name;
+            string strSQL = "Delete " + strTableName + " " + whereClauses;
+            return _unitOfWork.Database.Execute(strSQL, args);
+        }
+
     }
 }

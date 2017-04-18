@@ -17,8 +17,12 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
     /// </summary>
     public class A1_StepSaveOrder : IBizFlowStep<OrderBiz>
     {
-        [Dependency]
-        public IManagerCommon _managerCommon { get; set; }
+        private IManagerCommon _managerCommon;
+
+        public A1_StepSaveOrder(IManagerCommon managerCommon)
+        {
+            this._managerCommon = managerCommon;
+        }
 
         public string BizType
         {

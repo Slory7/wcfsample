@@ -53,15 +53,24 @@
     <Compile Include="Entity.cs" />
     <Compile Include="Infrastructure\IObjectState.cs" />
     <Compile Include="Infrastructure\ObjectState.cs" />
+    <Compile Include="Interface\IDataContext.cs" />
+    <Compile Include="Interface\IReadOnlyDataContext.cs" />
     <Compile Include="Interface\IReadOnlyRepository.cs" />
     <Compile Include="Interface\IRepository.cs" />
     <Compile Include="Interface\IReadOnlyUnitOfWork.cs" />
+    <Compile Include="Interface\ITrasactionObject.cs" />
     <Compile Include="Interface\IUnitOfWork.cs" />
+    <Compile Include="MIS\MISDataContext.cs" />
+    <Compile Include="MIS\MISReadOnlyDataContext.cs" />
+    <Compile Include="MIS\MISConnection.cs" />
+    <Compile Include="Paged.cs" />
+    <Compile Include="PetaDataContext.cs" />
     <Compile Include="ReadOnlyRepository.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="PetaPoco.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyUnitOfWork.cs" />
+    <Compile Include="TransactionObject.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

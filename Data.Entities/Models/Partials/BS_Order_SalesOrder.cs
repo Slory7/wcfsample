@@ -1,4 +1,5 @@
 ﻿using PetaPoco;
+using Repository.Pattern;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,10 @@ using System.Web;
 
 namespace Data.Entities.Models
 {
-    public partial class BS_Order_SalesOrder
+    public partial class BS_Order_SalesOrder : Entity
     {
+        internal object sCode;
+
         [ResultColumn]
         public int id { get; set; }
 

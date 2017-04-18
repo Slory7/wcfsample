@@ -45,7 +45,7 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
         {
             get
             {
-                return 20;
+                return 10;
             }
         }
 

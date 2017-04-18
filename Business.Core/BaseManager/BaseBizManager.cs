@@ -78,8 +78,6 @@ namespace Business.Core.BaseManager
             {
                 if (stepObj.StepNumber >= nLastStep)
                 {
-                    nLastStep = stepObj.StepNumber;
-
                     var stepResult = stepObj.ProcessStep(source, lastStepResult);
 
                     result = stepResult;
@@ -88,13 +86,11 @@ namespace Business.Core.BaseManager
                     {
                         lastStepResult = stepResult.Result;
                         if (stepObj.NextStep == -1)
-                        {
                             break;
-                        }
                         else if (stepObj.NextStep > 0)
-                        {
                             nLastStep = stepObj.NextStep;
-                        }
+                        else
+                            nLastStep = stepObj.StepNumber;
                     }
                     else
                     {
@@ -102,13 +98,13 @@ namespace Business.Core.BaseManager
                     }
                 }
             }
-            if (result.Status == ResultStatus.Success)
+            if (nLastStep > 0)
             {
-                var parallelIntances = canUseInstances.Where(t => t.AllowParallel);
+                var parallelIntances = canUseInstances.Where(t => t.AllowParallel && t.StepNumber <= nLastStep);
                 Parallel.ForEach(parallelIntances, (stepObj) =>
-               {
-                   stepObj.ProcessStep(source, lastStepResult);
-               });
+                {
+                    stepObj.ProcessStep(source, lastStepResult);
+                });
             }
             return result;
         }

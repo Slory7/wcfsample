@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using PetaPoco;
+using Repository.Pattern.NIS;
 
 namespace Repository.Pattern
 {
@@ -9,14 +10,12 @@ namespace Repository.Pattern
     {
         private bool _disposed;
 
-        private Database _database;
+        private IDataContext _database;
 
-        public UnitOfWork()
+        public Guid _sGUID = Guid.NewGuid();
+        public UnitOfWork(IDataContext database)
         {
-            //TODO:Or get string
-            var connectionConfig = System.Configuration.ConfigurationManager.ConnectionStrings["NISOrderContext"];
-            string connectionString = connectionConfig.ConnectionString;
-            _database = new Database(connectionString, connectionConfig.ProviderName);
+            _database = database;
         }
 
         #region Dispose
@@ -38,9 +37,10 @@ namespace Repository.Pattern
 
                 try
                 {
-                    if (_database != null && _database.Connection != null && _database.Connection.State == ConnectionState.Open)
+                    var petaDatabase = _database as PetaDataContext;
+                    if (petaDatabase != null && petaDatabase.Connection != null && petaDatabase.Connection.State == ConnectionState.Open)
                     {
-                        _database.Connection.Close();
+                        petaDatabase.Connection.Close();
                     }
                 }
                 catch (ObjectDisposedException)
@@ -63,7 +63,7 @@ namespace Repository.Pattern
 
         #endregion
 
-        public IDatabase Database
+        public IDataContext Database
         {
             get { return _database; }
         }
@@ -83,6 +83,28 @@ namespace Repository.Pattern
         public void Rollback()
         {
             _database.AbortTransaction();
+        }
+
+        /// <summary>
+        ///     Starts or continues a transaction.
+        /// </summary>
+        /// <returns>An TransactionObject reference that must be Completed or disposed</returns>
+        /// <remarks>
+        ///     This method makes management of calls to Begin/End/CompleteTransaction easier.
+        ///     The usage pattern for this should be:
+        ///     using (var tx = _UnitOfWork.GetTransaction())
+        ///     {
+        ///     // Do stuff
+        ///     _bizManager.Update(...);
+        ///     // Mark the transaction as complete
+        ///     tx.Complete();
+        ///     }
+        ///     Transactions can be nested but they must all be completed otherwise the entire
+        ///     transaction is aborted.
+        /// </remarks>
+        public ITransactionObject GetTransactionObject()
+        {
+            return new TransactionObject(_database);
         }
     }
 }

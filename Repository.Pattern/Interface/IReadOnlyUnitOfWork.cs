@@ -10,10 +10,8 @@ namespace Repository.Pattern.Interface
 {
     public interface IReadOnlyUnitOfWork : IDisposable
     {
-        IDatabase Database { get; }
+        IReadOnlyDataContext Database { get; }
         void Dispose(bool disposing);
-        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified);
-        bool Commit();
-        void Rollback();
+        ITransactionObject GetTransactionObject();
     }
 }
