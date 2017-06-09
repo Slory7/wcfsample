@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Repository.Pattern.NIS
+namespace Repository.Pattern.MIS
 {
     public class MISConnection
     {

@@ -10,8 +10,9 @@ using Business.Manager.Order.Interfaces;
 using Business.Core.Interfaces;
 using Business.Core.BaseManager;
 using Service.Contracts.ViewModels.Order;
+using Business.Manager.ExternalApi.WebApi1;
 
-namespace Business.Manager
+namespace Business.Manager.RegisterConfig
 {
     public class UnityConfigHandler : IUnityConfigHandler
     {
@@ -20,9 +21,13 @@ namespace Business.Manager
             container
                    .RegisterType<IManagerCommon, ManagerCommon>()
 
+                   .RegisterType<IManager<BS_Order_SalesOrder_Batch>, OrderBatchManager>()
                    .RegisterType<IOrderBatchManager, OrderBatchManager>()
 
                    .RegisterType<IOrderBizManager, OrderBizManager>()
+
+                   .RegisterType<IWebApi1Token, WebApi1Token>()
+                   .RegisterType<IWebApi1Services, WebApi1Services>()
                    ;
         }
     }

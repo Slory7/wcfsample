@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using Repository.Pattern;
 using Repository.Pattern.Interface;
+using Repository.Pattern.MIS;
 using Service.Core.Common;
 using Service.Core.Interfaces;
 using System;
@@ -19,6 +20,8 @@ namespace Service.Core
             container
                .RegisterType<IUnitOfWork, UnitOfWork>(new PerRequestLifetimeManager())
                .RegisterType<IReadOnlyUnitOfWork, ReadOnlyUnitOfWork>(new PerRequestLifetimeManager())
+               .RegisterType<IDataContext, MISDataContext>(new PerRequestLifetimeManager())
+               .RegisterType<IReadOnlyDataContext, MISReadOnlyDataContext>(new PerRequestLifetimeManager())
                //.RegisterType<DataContext>(new HierarchicalLifetimeManager());
                ;
 

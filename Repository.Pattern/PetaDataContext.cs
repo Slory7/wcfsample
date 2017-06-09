@@ -2,7 +2,6 @@
 using System;
 using System.Data;
 using PetaPoco;
-using Repository.Pattern.NIS;
 using System.Collections.Generic;
 
 namespace Repository.Pattern

@@ -18,6 +18,9 @@ using Data.Entities.Models;
 using Service.Contracts.Services.Order;
 using Service.Contracts.ViewModels.Order;
 using Business.Core.Interfaces;
+using Framework.Core.Net.Http;
+using Business.Manager.ExternalApi.WebApi1;
+using System.Threading.Tasks;
 
 namespace Business.Service.Order
 {
@@ -25,11 +28,14 @@ namespace Business.Service.Order
     [ValidateDataAnnotationsBehavior]
     public class OrderService : IOrderService
     {
-        IOrderBizManager  _manager;
+        readonly IOrderBizManager _manager;
+        readonly IWebApi1Services _webApiService;
         public OrderService(IOrderBizManager manager
+            , IWebApi1Services webApiService
             )
         {
             _manager = manager;
+            _webApiService = webApiService;
         }
 
         public ResultData<OrderBMResult> ProcessBMOrder(OrderBiz order)
@@ -62,6 +68,23 @@ namespace Business.Service.Order
             else
             {
                 result = _manager.ProcessZTOrder(order);
+            }
+
+            return result;
+        }
+
+        public async Task<ResultData> GetVoucher()
+        {
+            ResultData result = new ResultData();
+            if (!_manager.HasPermission())
+            {
+                result.Status = ResultStatus.Unauthorized;
+            }
+            else
+            {
+                var httpResult = await _webApiService.GetVoucher();
+                result.Status = httpResult.Status;
+                result.Message = httpResult.Message;
             }
 
             return result;

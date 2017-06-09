@@ -75,7 +75,14 @@ namespace WcfClient1
             var result = client.ProcessBMOrder(objDto);
             string strResultStatus = Constants.GetResultStatusString(result.Status);
             MessageBox.Show(result.Message, strResultStatus);
+        }
 
+        private async void button5_Click(object sender, EventArgs e)
+        {
+            var client = ClientGlobals.ClientService.GetClient<IOrderService>();
+            var result = await client.GetVoucher();
+            string strResultStatus = Constants.GetResultStatusString(result.Status);
+            MessageBox.Show(result.Message, strResultStatus);
         }
     }
 }
