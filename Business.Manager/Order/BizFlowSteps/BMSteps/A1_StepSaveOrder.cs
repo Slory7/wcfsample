@@ -65,7 +65,7 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
             //TODO: do some thing
             var resultObject = new ProcessObject();
             resultObject.NewOrderCode = Guid.NewGuid().ToString();
-            result.Result = resultObject;
+            result.Data = resultObject;
             return result; 
         }
     }

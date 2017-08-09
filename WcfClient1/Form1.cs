@@ -42,7 +42,7 @@ namespace WcfClient1
             var client = ClientGlobals.ClientService.GetClient<IOrderBatchService>();
             var day = DateTime.Parse(this.textBox1.Text);
             var result = client.GetOneDayBatch(day);
-            current = result.Result;
+            current = result.Data;
             this.label1.Text = current.Count == 0 ? "未找到" : current.First().sBatchCode;
             string strResultStatus = Constants.GetResultStatusString(result.Status);
             MessageBox.Show(result.Message, strResultStatus);
@@ -53,7 +53,7 @@ namespace WcfClient1
             var client = ClientGlobals.ClientService.GetClient<IOrderBatchService>();
             var codes = this.textBox1.Text;
             var result = client.GetBatchsByCodes(codes);
-            current = result.Result;
+            current = result.Data;
             this.label1.Text = current.Count == 0 ? "未找到" : String.Join(",", current.Select(x => x.sOrderCode));
             string strResultStatus = Constants.GetResultStatusString(result.Status);
             MessageBox.Show(result.Message, strResultStatus);

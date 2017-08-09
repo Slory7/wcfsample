@@ -53,7 +53,7 @@ namespace Business.Manager.Common
             var token = MemoryCache.Default.Get(cacheKey) as TokenInfo;
             var retResult = new ResultData<TokenInfo>()
             {
-                Result = token
+                Data = token
             };
             if (token == null)
             {
@@ -81,7 +81,7 @@ namespace Business.Manager.Common
                                     Access_Token = objTokenResult.access_token,
                                     Token_Type = objTokenResult.token_type
                                 };
-                                retResult.Result = token;
+                                retResult.Data = token;
                                 MemoryCache.Default.Set(cacheKey, token, DateTime.Now.AddSeconds(expireTime));
                             }
                         }

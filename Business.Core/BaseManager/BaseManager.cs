@@ -54,8 +54,8 @@ namespace Business.Core.BaseManager
             string strCheckResult = CheckDataValid(itemToAdd, DBOperation.Insert);
             if (strCheckResult == null)
             {
-                result.Result = _repository.Insert(itemToAdd);
-                if (result.Result == null)
+                result.Data = _repository.Insert(itemToAdd);
+                if (result.Data == null)
                     result.Status = ResultStatus.Error;
             }
             else
@@ -72,8 +72,8 @@ namespace Business.Core.BaseManager
             string strCheckResult = CheckDataValid(itemToUpdate, DBOperation.Update);
             if (strCheckResult == null)
             {
-                result.Result = _repository.Update(itemToUpdate);
-                if (result.Result <= 0)
+                result.Data = _repository.Update(itemToUpdate);
+                if (result.Data <= 0)
                     result.Status = ResultStatus.Error;
             }
             else
@@ -90,8 +90,8 @@ namespace Business.Core.BaseManager
             string strCheckResult = CheckDataValid(poco, DBOperation.Update);
             if (strCheckResult == null)
             {
-                result.Result = _repository.Update(poco);
-                if (result.Result <= 0)
+                result.Data = _repository.Update(poco);
+                if (result.Data <= 0)
                     result.Status = ResultStatus.Error;
             }
             else
@@ -108,8 +108,8 @@ namespace Business.Core.BaseManager
             string strCheckResult = CheckDataValid(itemToDelete, DBOperation.Delete);
             if (strCheckResult == null)
             {
-                result.Result = _repository.Update(itemToDelete);
-                if (result.Result <= 0)
+                result.Data = _repository.Update(itemToDelete);
+                if (result.Data <= 0)
                     result.Status = ResultStatus.Error;
             }
             else
@@ -123,7 +123,7 @@ namespace Business.Core.BaseManager
         public virtual ResultData<int> Delete(object primaryKey)
         {
             var result = new ResultData<int>();
-            result.Result = _repository.Delete(primaryKey);
+            result.Data = _repository.Delete(primaryKey);
             return result;
         }
     }

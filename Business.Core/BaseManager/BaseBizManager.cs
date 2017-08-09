@@ -1,4 +1,5 @@
 ﻿using Business.Core.Interfaces;
+using Framework.Core.Logging;
 using Framework.Core.Reflection;
 using Microsoft.Practices.Unity;
 using Repository.Pattern.Infrastructure;
@@ -73,18 +74,27 @@ namespace Business.Core.BaseManager
             var canUseInstances = lstTypeInstances.Where(t => t.IsEnabled && t.BizType == bizType).OrderBy(t => t.StepNumber);
             var serialIntances = canUseInstances.Where(t => !t.AllowParallel);
             int nLastStep = 0;
-            object lastStepResult = null;
+            object lastStepData = null;
             foreach (var stepObj in serialIntances)
             {
                 if (stepObj.StepNumber >= nLastStep)
                 {
-                    var stepResult = stepObj.ProcessStep(source, lastStepResult);
-
-                    result = stepResult;
+                    ResultData<object> stepResult = null;
+                    try
+                    {
+                        stepResult = stepObj.ProcessStep(source, lastStepData);
+                        result = stepResult;
+                    }
+                    catch (Exception e)
+                    {
+                        result = new ResultData<object>() { Status = ResultStatus.Error, Message = e.Message };
+                        Log.Instance.LogError(e);
+                        break;
+                    }
 
                     if (stepResult.Status == ResultStatus.Success)
                     {
-                        lastStepResult = stepResult.Result;
+                        lastStepData = stepResult.Data;
                         if (stepObj.NextStep == -1)
                             break;
                         else if (stepObj.NextStep > 0)
@@ -103,7 +113,7 @@ namespace Business.Core.BaseManager
                 var parallelIntances = canUseInstances.Where(t => t.AllowParallel && t.StepNumber <= nLastStep);
                 Parallel.ForEach(parallelIntances, (stepObj) =>
                 {
-                    stepObj.ProcessStep(source, lastStepResult);
+                    stepObj.ProcessStep(source, lastStepData);
                 });
             }
             return result;

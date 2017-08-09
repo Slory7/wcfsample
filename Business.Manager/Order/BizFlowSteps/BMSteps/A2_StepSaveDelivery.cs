@@ -54,7 +54,7 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
             var result = new ResultData<object>();
             //TODO: do some thing
             var resultObject = (ProcessObject)prevResult;
-            result.Result = resultObject;
+            result.Data = resultObject;
             return result; 
         }
     }

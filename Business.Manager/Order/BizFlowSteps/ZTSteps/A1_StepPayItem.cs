@@ -54,7 +54,7 @@ namespace Business.Manager.Order.BizFlowSteps.ZTSteps
             var result = new ResultData<object>();
             //TODO: do some thing
             var resultObject = new ProcessObject();
-            result.Result = resultObject;
+            result.Data = resultObject;
             return result; 
         }
     }

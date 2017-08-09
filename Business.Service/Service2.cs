@@ -40,7 +40,7 @@ namespace Business.Service
                 throw new ArgumentNullException("composite");
             }
 
-            result.Result = composite;
+            result.Data = composite;
 
             return result;
         }

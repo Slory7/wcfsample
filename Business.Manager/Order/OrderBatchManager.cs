@@ -54,7 +54,7 @@ namespace Business.Manager.Order
             var list = _repositoryReadOnly.GetOneDayBatchs(day);
 
             var result = new ResultData<List<BS_Order_SalesOrder_BatchDto>>();
-            result.Result = list;
+            result.Data = list;
 
             return result;
         }
@@ -71,10 +71,10 @@ namespace Business.Manager.Order
                 {
                     result.Status = resultItem.Status;
                     result.Message = resultItem.Message;
-                    result.Result = 0;
+                    result.Data = 0;
                     break;
                 }
-                else result.Result += 1;
+                else result.Data += 1;
             }
             if (result.Status == ResultStatus.Success)
                 _unitOfWork.Commit();

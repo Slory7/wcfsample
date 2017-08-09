@@ -54,7 +54,7 @@ namespace Business.Service.Order
                     objList.Add(objDto);
                 }
             }
-            result.Result = objList;
+            result.Data = objList;
 
             return result;
         }
@@ -74,7 +74,7 @@ namespace Business.Service.Order
 
             if (resultItems.Status == ResultStatus.Success)
             {
-                result.Result = ConvertToDto(itemsToInsert).ToList();
+                result.Data = ConvertToDto(itemsToInsert).ToList();
             }
 
             result.Message = resultItems.Message;
@@ -108,7 +108,7 @@ namespace Business.Service.Order
                     {
                         //affect result
                         item.dtModify = DateTime.Now;
-                        result.Result = item;
+                        result.Data = item;
                     }
                     else
                     {

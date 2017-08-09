@@ -35,7 +35,7 @@ namespace Business.Manager.ExternalApi.WebApi1
                       ""StudentCode"": ""xx""
                     }
             ";
-                var httpResult = await HttpWebClient.Instance.PostAsync(baseUrl, "/api/q", strData, ContentType.json, tokenResult.Result);
+                var httpResult = await HttpWebClient.Instance.PostAsync(baseUrl, "/api/q", strData, ContentType.json, tokenResult.Data);
                 retResult.Message = httpResult.Message ?? httpResult.Content;
                 retResult.Status = httpResult.ToResultStatus();
             }

@@ -47,23 +47,25 @@ namespace Business.Manager.Order
 
             InitObject(order);
 
-            _unitOfWork.BeginTransaction();
-            var resultProcess = ProcessBizFlow(order, BizTypeEnum.BM.ToString());
-
-            if (result.Status == ResultStatus.Success)
+            using (_unitOfWork.GetTransactionObject())
             {
-                _unitOfWork.Commit();
+                var resultProcess = ProcessBizFlow(order, BizTypeEnum.BM.ToString());
 
-                result.Result = new OrderBMResult()
+                if (result.Status == ResultStatus.Success)
                 {
-                    NewOrderCode = ((ProcessObject)resultProcess.Result).NewOrderCode
-                };
-            }
-            else
-                _unitOfWork.Rollback();
+                    _unitOfWork.Commit();
 
-            result.Status = resultProcess.Status;
-            result.Message = resultProcess.Message;
+                    result.Data = new OrderBMResult()
+                    {
+                        NewOrderCode = ((ProcessObject)resultProcess.Data).NewOrderCode
+                    };
+                }
+                else
+                    _unitOfWork.Rollback();
+
+                result.Status = resultProcess.Status;
+                result.Message = resultProcess.Message;
+            }
             return result;
         }
         public ResultData<OrderZTResult> ProcessZTOrder(OrderBiz order)
@@ -72,21 +74,23 @@ namespace Business.Manager.Order
 
             InitObject(order);
 
-            _unitOfWork.BeginTransaction();
-            var resultProcess = ProcessBizFlow(order, BizTypeEnum.ZT.ToString());
-            if (result.Status == ResultStatus.Success)
+            using (_unitOfWork.GetTransactionObject())
             {
-                result.Result = new OrderZTResult()
+                var resultProcess = ProcessBizFlow(order, BizTypeEnum.ZT.ToString());
+                if (result.Status == ResultStatus.Success)
                 {
-                    OrderZTTotal = ((ProcessObject)resultProcess.Result).ZTTotal
-                };
-                _unitOfWork.Commit();
-            }
-            else
-                _unitOfWork.Rollback();
+                    _unitOfWork.Commit();
+                    result.Data = new OrderZTResult()
+                    {
+                        OrderZTTotal = ((ProcessObject)resultProcess.Data).ZTTotal
+                    };
+                }
+                else
+                    _unitOfWork.Rollback();
 
-            result.Status = resultProcess.Status;
-            result.Message = resultProcess.Message;
+                result.Status = resultProcess.Status;
+                result.Message = resultProcess.Message;
+            }
             return result;
         }
     }

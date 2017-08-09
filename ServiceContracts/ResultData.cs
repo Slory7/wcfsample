@@ -15,7 +15,7 @@ namespace Service.Contracts
             this.Status = ResultStatus.Success;
         }
         [DataMember]
-        public T Result { get; set; }
+        public T Data { get; set; }
     }
 
     [DataContract]
