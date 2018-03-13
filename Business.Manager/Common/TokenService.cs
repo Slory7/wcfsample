@@ -68,7 +68,7 @@ namespace Business.Manager.Common
                         dic.Add("client_secret", _client_secret);
                         dic.Add("username", _username);
                         dic.Add("password", _password);
-                        var httpResult = HttpWebClient.Instance.PostAsync(_baseUrl, _tokenRelativeUrl, dic, isLogData: false).Result;
+                        var httpResult = HttpWebClient.Instance.PostAsync(_baseUrl, _tokenRelativeUrl, dic, isLogData: false, timeoutSecond: 5).Result;
                         if (httpResult.IsSuccessStatusCode)
                         {
                             TokenResult objTokenResult = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResult>(httpResult.Content);

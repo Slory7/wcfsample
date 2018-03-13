@@ -16,6 +16,13 @@ namespace Repository.Pattern.MIS
         public MISReadOnlyDataContext()
             : base(_connectionString, MISConnection.DefaultDbProviderName)
         {
+            var strTimeOut = System.Configuration.ConfigurationManager.AppSettings["DB.ReadOnly.CommandTimeout"];
+            if (!string.IsNullOrEmpty(strTimeOut))
+                this.CommandTimeout = Int32.Parse(strTimeOut);
+            else
+            {
+                this.CommandTimeout = 5;
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using Service.Contracts;
 using Business.Manager.Order.Internal;
 using Microsoft.Practices.Unity;
 using Business.Manager.Interfaces;
+using Business.Manager.Order.Interfaces;
 
 namespace Business.Manager.Order.BizFlowSteps.BMSteps
 {
@@ -18,10 +19,15 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
     public class A1_StepSaveOrder : IBizFlowStep<OrderBiz>
     {
         private IManagerCommon _managerCommon;
+        private IOrderBatchManager _orderBatchManager;
 
-        public A1_StepSaveOrder(IManagerCommon managerCommon)
+        public A1_StepSaveOrder(
+            IManagerCommon managerCommon,
+            IOrderBatchManager orderBatchManager
+            )
         {
             this._managerCommon = managerCommon;
+            _orderBatchManager = orderBatchManager;
         }
 
         public string BizType
@@ -61,8 +67,9 @@ namespace Business.Manager.Order.BizFlowSteps.BMSteps
         public ResultData<object> ProcessStep(OrderBiz source, object prevResult)
         {
             var result = new ResultData<object>();
-            _managerCommon.DoSomeThing();
+            _managerCommon.DoSomeThing();            
             //TODO: do some thing
+            _orderBatchManager.UpdateBulk();
             var resultObject = new ProcessObject();
             resultObject.NewOrderCode = Guid.NewGuid().ToString();
             result.Data = resultObject;

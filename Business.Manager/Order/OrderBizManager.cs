@@ -46,26 +46,26 @@ namespace Business.Manager.Order
             var result = new ResultData<OrderBMResult>();
 
             InitObject(order);
-
-            using (_unitOfWork.GetTransactionObject())
+            Task.Factory.StartNew(() =>
             {
-                var resultProcess = ProcessBizFlow(order, BizTypeEnum.BM.ToString());
-
-                if (result.Status == ResultStatus.Success)
+                using (_unitOfWork.GetTransactionObject())
                 {
-                    _unitOfWork.Commit();
+                    var resultProcess = ProcessBizFlow(order, BizTypeEnum.BM.ToString());
 
-                    result.Data = new OrderBMResult()
+                    if (result.Status == ResultStatus.Success)
                     {
-                        NewOrderCode = ((ProcessObject)resultProcess.Data).NewOrderCode
-                    };
-                }
-                else
-                    _unitOfWork.Rollback();
+                        _unitOfWork.Commit();
 
-                result.Status = resultProcess.Status;
-                result.Message = resultProcess.Message;
-            }
+                        result.Data = new OrderBMResult()
+                        {
+                            NewOrderCode = ((ProcessObject)resultProcess.Data).NewOrderCode
+                        };
+                    }
+                    result.Status = resultProcess.Status;
+                    result.Message = resultProcess.Message;
+                }
+            }).Wait(10 * 1000); ;
+
             return result;
         }
         public ResultData<OrderZTResult> ProcessZTOrder(OrderBiz order)
@@ -85,9 +85,6 @@ namespace Business.Manager.Order
                         OrderZTTotal = ((ProcessObject)resultProcess.Data).ZTTotal
                     };
                 }
-                else
-                    _unitOfWork.Rollback();
-
                 result.Status = resultProcess.Status;
                 result.Message = resultProcess.Message;
             }

@@ -37,13 +37,21 @@ namespace WcfClient1
         //    string strResultStatus = Constants.GetResultStatusString(result.Status);
         //    MessageBox.Show(result.Message, strResultStatus);
         //}
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             var client = ClientGlobals.ClientService.GetClient<IOrderBatchService>();
             var day = DateTime.Parse(this.textBox1.Text);
-            var result = client.GetOneDayBatch(day);
-            current = result.Data;
-            this.label1.Text = current.Count == 0 ? "未找到" : current.First().sBatchCode;
+            ResultData result = null;
+            await Task.Run(() =>
+            {
+                var resultData = client.GetOneDayBatch(day);
+                current = resultData.Data;
+                result = resultData;
+            });
+            if (result.Status == ResultStatus.Success)
+            {
+                this.label1.Text = current.Count == 0 ? "未找到" : current.First().sBatchCode;
+            }
             string strResultStatus = Constants.GetResultStatusString(result.Status);
             MessageBox.Show(result.Message, strResultStatus);
         }

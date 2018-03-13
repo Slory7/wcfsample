@@ -11,6 +11,7 @@ namespace Business.Manager.Order.Interfaces
     public interface IOrderBatchManager : IManager<BS_Order_SalesOrder_Batch>
     {
         ResultData<List<BS_Order_SalesOrder_BatchDto>> GetOneDayBatch(DateTime day);
+        ResultData<int> UpdateBulk();
         ResultData<int> InsertBulk(ICollection<BS_Order_SalesOrder_Batch> items);
     }
 }

@@ -40,6 +40,8 @@ namespace Business.Service.Order
 
         public ResultData<OrderBMResult> ProcessBMOrder(OrderBiz order)
         {
+            Framework.Core.Logging.Log.Instance.LogInfo("ProcessBMOrder");
+
             ResultData<OrderBMResult> result = null;
             if (!_manager.HasPermission())
             {

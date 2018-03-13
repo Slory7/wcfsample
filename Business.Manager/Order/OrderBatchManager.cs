@@ -10,6 +10,7 @@ using Data.Repository.Repositories.Order;
 using System.Linq;
 using Service.Contracts.ViewModels.Order;
 using Business.Manager.Interfaces;
+using System.Threading;
 
 namespace Business.Manager.Order
 {
@@ -58,7 +59,16 @@ namespace Business.Manager.Order
 
             return result;
         }
-
+        public ResultData<int> UpdateBulk()
+        {
+            var result = new ResultData<int>();
+            using (var tx = _unitOfWork.GetTransactionObject())
+            {
+                //result.Data = _repository.Update("set sMarketingSourcesExt=null", "");
+                //Thread.Sleep(220 * 1000);
+            }
+            return result;
+        }
         public ResultData<int> InsertBulk(ICollection<BS_Order_SalesOrder_Batch> items)
         {
             var result = new ResultData<int>();

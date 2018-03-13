@@ -16,7 +16,7 @@ namespace Client.Core
 
         public IService GetClient<IService>()
         {
-            var serviceName = typeof(IService).Name.TrimStart('I','i');
+            var serviceName = typeof(IService).Name.TrimStart('I', 'i');
             IChannel client = clients.ContainsKey(serviceName) ? clients[serviceName] : null;
             if (client == null)
             {

@@ -1,23 +1,16 @@
 ﻿using AutoMapper;
-using Business.Core;
 using DevTrends.WCFDataAnnotations;
-using Framework.Core;
 using Service.Core;
 using Service.Contracts;
-using Service.Contracts.Services;
-using Service.Contracts.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 using Business.Manager.Order.Interfaces;
 using Data.Entities.Models;
 using Service.Contracts.Services.Order;
 using Service.Contracts.ViewModels.Order;
 using Business.Core.Interfaces;
+using System.Threading.Tasks;
 
 namespace Business.Service.Order
 {
@@ -60,8 +53,18 @@ namespace Business.Service.Order
         }
 
         public ResultData<List<BS_Order_SalesOrder_BatchDto>> GetOneDayBatch(DateTime day)
-        {
-            return _orderBatchBizManager.GetOneDayBatch(day);
+        {            
+            var task = Task.Run(() =>
+            {
+                return _orderBatchBizManager.GetOneDayBatch(day);
+            });
+            var isCompete = task.Wait(new TimeSpan(0,1,0));
+            if (isCompete)
+            {
+                var result = task.Result;
+                return result;
+            }
+            return new ResultData<List<BS_Order_SalesOrder_BatchDto>>() { Status = ResultStatus.Error }; ;
         }
 
         public ResultData<List<BS_Order_SalesOrder_BatchDto>> InsertBulk(List<BS_Order_SalesOrder_BatchDto> items)
